@@ -1,4 +1,5 @@
 import os
+import json
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from flask import Blueprint, redirect, request, url_for
@@ -6,16 +7,13 @@ from flask import Blueprint, redirect, request, url_for
 # Create a Blueprint for the Google Calendar-related routes
 calendar_bp = Blueprint('calendar', __name__)
 
-
 # Load client secrets from the JSON file
-CLIENT_SECRETS_FILE = "/home/runner/bottie/client_secret.json"
 SCOPES = ['https://www.googleapis.com/auth/calendar']
-
 
 # Create an OAuth 2.0 flow
 def create_oauth_flow():
-    flow = Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-    flow.redirect_uri = "https://bottie.herokuapp.com/oauth2callback"
+    client_secrets = json.loads(os.environ['CLIENT_SECRET_JSON'])
+    flow = Flow.from_client_config(client_secrets, SCOPES)
     return flow
 
 # Create an authentication route using the Blueprint
