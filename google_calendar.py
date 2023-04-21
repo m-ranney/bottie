@@ -8,7 +8,7 @@ calendar_bp = Blueprint('calendar', __name__)
 
 
 # Load client secrets from the JSON file
-CLIENT_SECRETS_FILE = "client_secret.json"
+CLIENT_SECRETS_FILE = "/home/runner/bottie/client_secret.json"
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
