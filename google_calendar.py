@@ -37,7 +37,7 @@ def process_input_with_openai(user_input):
     # OpenAI prompt to generate event details
     response = openai.Completion.create(
         engine="davinci-codex",
-        prompt=f"Use the information from '{user_input}' to generate an event that can be imported into Google Calendar. Assume that today is {today}. Parse the event date, start time, and duration from the user input, and generate the event details in JSON format: '{{\"summary\": \"Example Event\", \"start\": \{\"dateTime\": \"2023-05-01T09:00:00-07:00\" \"timeZone\": \"America/Los_Angeles\"\}, \"end\": \{\"dateTime\": \"2023-05-01T09:00:00-07:00\" \"timeZone\": \"America/Los_Angeles\"\}}}'",
+        prompt=f"""Use the information from '{user_input}' to generate an event that can be imported into Google Calendar. Assume that today is {today}. Parse the event date, start time, and duration from the user input, and generate the event details in JSON format: '{{"summary": "Example Event", "start": {{"dateTime": "2023-05-01T09:00:00-07:00", "timeZone": "America/Los_Angeles"}}, "end": {{"dateTime": "2023-05-01T09:00:00-07:00", "timeZone": "America/Los_Angeles"}}}}'.""",
         max_tokens=200,
         n=1,
         stop=None,
