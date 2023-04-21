@@ -7,6 +7,7 @@ from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import Flow
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask.helpers import make_response
+from datetime import date
 
 # Create a Blueprint for the Google Calendar-related routes
 calendar_bp = Blueprint('calendar', __name__)
