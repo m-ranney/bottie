@@ -6,3 +6,4 @@ urllib3==1.26.12
 google-api-python-client==2.34.0
 google-auth-httplib2
 google-auth-oauthlib
+openai

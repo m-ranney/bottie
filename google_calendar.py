@@ -1,17 +1,52 @@
 import os
 import json
+import openai
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import Flow
-from flask import Blueprint, redirect, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for
 from flask.helpers import make_response
 
 # Create a Blueprint for the Google Calendar-related routes
 calendar_bp = Blueprint('calendar', __name__)
 
+# Set up OpenAI API key
+openai.api_key = os.environ['OPENAI_API_KEY_CE']
+
 # Load client secrets from the JSON file
 SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+
+# New route to handle form submission and render template of OpenAis output 
+@calendar_bp.route('/create_event', methods=['GET', 'POST'])
+def create_event():
+    event_json = None
+    if request.method == 'POST':
+        user_input = request.form['event_input']
+        event_json = process_input_with_openai(user_input)
+    return render_template('create_event.html', event_json=event_json)
+
+
+# Process the input from user and process with the OpenAI API
+def process_input_with_openai(user_input):
+
+    # Set today to be todays date  
+    today = date.today().strftime("%Y%m%d")
+    
+    # OpenAI prompt to generate event details
+    response = openai.Completion.create(
+        engine="davinci-codex",
+        prompt=f"Use the information from '{user_input}' to generate an event that can be imported into Google Calendar. Assume that today is {today}. Parse the event date, start time, and duration from the user input, and generate the event details in JSON format: '{{\"summary\": \"Example Event\", \"start\": \{\"dateTime\": \"2023-05-01T09:00:00-07:00\" \"timeZone\": \"America/Los_Angeles\"\}, \"end\": \{\"dateTime\": \"2023-05-01T09:00:00-07:00\" \"timeZone\": \"America/Los_Angeles\"\}}}'",
+        max_tokens=200,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+
+    return response.choices[0].text.strip()
+
+
 
 # Create an OAuth 2.0 flow
 def create_oauth_flow():

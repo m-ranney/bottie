@@ -9,4 +9,10 @@
         </div>
         <input type="submit" class="btn btn-primary" value="Create Event">
     </form>
+
+    {% if event_json %}
+        <h3>Generated Event JSON:</h3>
+        <pre>{{ event_json }}</pre>
+    {% endif %}
+
 {% endblock %}
