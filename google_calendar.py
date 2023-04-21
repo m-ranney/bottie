@@ -1,8 +1,11 @@
 import os
 import json
 from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import Flow
 from flask import Blueprint, redirect, request, url_for
+from flask.helpers import make_response
 
 # Create a Blueprint for the Google Calendar-related routes
 calendar_bp = Blueprint('calendar', __name__)
@@ -20,7 +23,37 @@ def create_oauth_flow():
 @calendar_bp.route('/auth')
 def auth():
     flow = create_oauth_flow()
+    flow.redirect_uri = url_for('calendar.callback', _external=True, _scheme='https')
     authorization_url, state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true')
-    return redirect(authorization_url)
+    response = make_response(redirect(authorization_url))
+    response.set_cookie('state', state)
+    return response
+
+# Function to handle the callback from Google after the user grants or denies permission
+@calendar_bp.route('/callback')
+def callback():
+    state = request.cookies.get('state')
+    flow = create_oauth_flow()
+    flow.redirect_uri = url_for('calendar.callback', _external=True, _scheme='https')
+    authorization_response = request.url
+    flow.fetch_token(authorization_response=authorization_response)
+    credentials = flow.credentials
+    # You can store the credentials for later use, e.g., in a database or session
+
+    try:
+        # Use the credentials to access the Google Calendar API
+        service = build('calendar', 'v3', credentials=credentials)
+        calendar = service.calendars().get(calendarId='primary').execute()
+
+        # Get the calendar's name and timezone
+        calendar_name = calendar['summary']
+        calendar_timezone = calendar['timeZone']
+
+        # Return a simple message with the calendar's name and timezone
+        return f"Calendar '{calendar_name}' has timezone: {calendar_timezone}"
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+        return "An error occurred while accessing the Google Calendar API."
