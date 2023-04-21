@@ -9,7 +9,7 @@ credentials_json = {
     "client_id": "143793044167-c48ki99ihdf2kh0ma4l1546nfe4prcb2.apps.googleusercontent.com",
     "client_secret": "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",
     "scopes": ["https://www.googleapis.com/auth/calendar"],
-    "expiry": "2023-04-21 23:38:57.374525"
+    "expiry": "2023-04-21T23:38:57"
 }
 
 os.environ["STORED_CREDENTIALS_JSON"] = json.dumps(credentials_json)

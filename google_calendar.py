@@ -89,14 +89,7 @@ def callback():
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials
-    # You can store the credentials for later use, e.g., in a database or session
 
-    # Print the access token, refresh token, and expiry timestamp
-    print(f"Access token: {credentials.token}")
-    print(f"Refresh token: {credentials.refresh_token}")
-    print(f"Expiry timestamp: {credentials.expiry}")
-
-  
     try:
         # Use the credentials to access the Google Calendar API
         service = build('calendar', 'v3', credentials=credentials)
