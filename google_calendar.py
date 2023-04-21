@@ -2,6 +2,7 @@ import os
 import json
 import openai
 from google.oauth2.credentials import Credentials
+from google.oauth2 import AccessTokenCredentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import Flow
@@ -93,3 +94,16 @@ def callback():
     except HttpError as error:
         print(f"An error occurred: {error}")
         return "An error occurred while accessing the Google Calendar API."
+
+
+# Create an event in google calendar
+def create_google_calendar_event(event_json, credentials):
+    try:
+        service = build('calendar', 'v3', credentials=credentials)
+
+        event = service.events().insert(calendarId='primary', body=event_json).execute()
+        return f"Event created: {event['htmlLink']}"
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+        return None
