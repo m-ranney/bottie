@@ -2,12 +2,12 @@ import os
 import json
 import openai
 from google.oauth2.credentials import Credentials
-from google.oauth2 import AccessTokenCredentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import Flow
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask.helpers import make_response
+from credentials_manager import load_credentials, save_credentials
 from datetime import date
 
 # Create a Blueprint for the Google Calendar-related routes
@@ -19,15 +19,27 @@ openai.api_key = os.environ['OPENAI_API_KEY_CE']
 # Load client secrets from the JSON file
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
-
 # New route to handle form submission and render template of OpenAis output 
 @calendar_bp.route('/create_event', methods=['GET', 'POST'])
 def create_event():
     event_json = None
+    success_message = None
+    
+    # If the user is not logged in, redirect to the login page
     if request.method == 'POST':
         user_input = request.form['event_input']
         event_json = process_input_with_openai(user_input)
-    return render_template('create_event.html', event_json=event_json)
+
+        # Load the user's credentials
+        if os.environ.get("STORED_CREDENTIALS_JSON"):
+            credentials = Credentials.from_authorized_user_info(info=json.loads(os.environ["STORED_CREDENTIALS_JSON"]))
+        else:
+            credentials = load_credentials()
+
+        # Call the create_google_calendar_event function to create the event
+        success_message = create_google_calendar_event(event_json, credentials)
+  
+    return render_template('create_event.html', event_json=event_json, success_message=success_message)
 
 
 # Process the input from user and process with the OpenAI API
@@ -79,6 +91,12 @@ def callback():
     credentials = flow.credentials
     # You can store the credentials for later use, e.g., in a database or session
 
+    # Print the access token, refresh token, and expiry timestamp
+    print(f"Access token: {credentials.token}")
+    print(f"Refresh token: {credentials.refresh_token}")
+    print(f"Expiry timestamp: {credentials.expiry}")
+
+  
     try:
         # Use the credentials to access the Google Calendar API
         service = build('calendar', 'v3', credentials=credentials)
