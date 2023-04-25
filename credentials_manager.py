@@ -5,10 +5,8 @@ from flask import session
 
 
 def load_credentials():
-    credentials_json = session.get('stored_credentials')
-    if credentials_json:
-        credentials = Credentials.from_authorized_user_info(info=credentials_json)
-        return credentials
+    if os.environ.get("STORED_CREDENTIALS_JSON"):
+        return Credentials.from_authorized_user_info(info=json.loads(os.environ["STORED_CREDENTIALS_JSON"]))
     return None
 
 

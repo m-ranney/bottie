@@ -39,8 +39,8 @@ def create_event():
 
         # Debugging: Check if the credentials are not None
         if credentials is None:
-            print("User credentials not found")
-            return "User credentials not found", 404
+            auth_url = url_for('calendar.auth')
+            return redirect(auth_url)
 
         # Debugging: Print credentials to verify they are being retrieved correctly
         print("User credentials: ", credentials)
@@ -99,6 +99,7 @@ def callback():
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials
+    os.environ["STORED_CREDENTIALS_JSON"] = credentials.to_json() 
     save_credentials(credentials)
   
     try:
