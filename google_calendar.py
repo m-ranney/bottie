@@ -87,7 +87,8 @@ def auth():
     flow.redirect_uri = url_for('calendar.callback', _external=True, _scheme='https')
     authorization_url, state = flow.authorization_url(
         access_type='offline',
-        include_granted_scopes='true')
+        include_granted_scopes='true',
+        prompt='consent')
     response = make_response(redirect(authorization_url))
     response.set_cookie('state', state)
     return response
