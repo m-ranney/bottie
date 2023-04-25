@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 from google_calendar import create_oauth_flow, calendar_bp
 
 app = Flask(__name__)
 app.register_blueprint(calendar_bp, url_prefix='/calendar')
+app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 # Route to the Home page
 @app.route('/')

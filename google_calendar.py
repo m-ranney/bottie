@@ -5,7 +5,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import Flow
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask.helpers import make_response
 from credentials_manager import load_credentials, save_credentials
 from datetime import date
@@ -58,7 +58,7 @@ def process_input_with_openai(user_input):
         temperature=0.5,
     )
 
-    return response.choices[0].text.strip()
+    return response.choices[0].text.strip(), response
 
 
 
@@ -89,6 +89,7 @@ def callback():
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials
+    save_credentials(credentials)
   
     try:
         # Use the credentials to access the Google Calendar API

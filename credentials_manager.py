@@ -4,11 +4,14 @@ from google.oauth2.credentials import Credentials
 
 
 def load_credentials():
-    credentials_json = json.loads(os.environ['STORED_CREDENTIALS_JSON'])
-    credentials = Credentials.from_authorized_user_info(info=credentials_json)
-    return credentials
+    credentials_json = session.get('stored_credentials')
+    if credentials_json:
+        credentials = Credentials.from_authorized_user_info(info=credentials_json)
+        return credentials
+    return None
 
 def save_credentials(credentials):
-    credentials_json = json.dumps(credentials.to_json())
-    os.environ['STORED_CREDENTIALS_JSON'] = credentials_json
+    credentials_json = json.loads(credentials.to_json())
+    session['stored_credentials'] = credentials_json
+
 
