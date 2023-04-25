@@ -36,6 +36,16 @@ def create_event():
         else:
             credentials = load_credentials()
 
+
+        # Debugging: Check if the credentials are not None
+        if credentials is None:
+            print("User credentials not found")
+            return "User credentials not found", 404
+
+        # Debugging: Print credentials to verify they are being retrieved correctly
+        print("User credentials: ", credentials)
+
+      
         # Call the create_google_calendar_event function to create the event
         success_message = create_google_calendar_event(event_json, credentials)
   
