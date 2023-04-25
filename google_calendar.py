@@ -5,7 +5,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import Flow
-from flask import Blueprint, redirect, render_template, request, url_for, session
+from flask import Blueprint, redirect, render_template, request, url_for, session, jsonify
 from flask.helpers import make_response
 from credentials_manager import load_credentials, save_credentials
 from datetime import date
@@ -36,7 +36,9 @@ def create_event():
         else:
             credentials = load_credentials()
 
-
+        # Store event_json in session
+          session['event_json'] = event_json
+  
         # Debugging: Check if the credentials are not None
         if credentials is None:
             auth_url = url_for('calendar.auth')
@@ -101,6 +103,12 @@ def callback():
     credentials = flow.credentials
     os.environ["STORED_CREDENTIALS_JSON"] = credentials.to_json() 
     save_credentials(credentials)
+
+    # Retrieve event_json from session and create the event
+    event_json = session.get('event_json')
+    if event_json:
+        success_message = create_google_calendar_event(event_json, credentials)
+        return f"Event created: {success_message}"
   
     try:
         # Use the credentials to access the Google Calendar API
