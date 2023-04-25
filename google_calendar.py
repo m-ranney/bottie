@@ -30,14 +30,14 @@ def create_event():
         user_input = request.form['event_input']
         event_json = process_input_with_openai(user_input)
 
+        # Store event_json in session
+        session['event_json'] = event_json
+      
         # Load the user's credentials
         if os.environ.get("STORED_CREDENTIALS_JSON"):
             credentials = Credentials.from_authorized_user_info(info=json.loads(os.environ["STORED_CREDENTIALS_JSON"]))
         else:
             credentials = load_credentials()
-
-        # Store event_json in session
-          session['event_json'] = event_json
   
         # Debugging: Check if the credentials are not None
         if credentials is None:
