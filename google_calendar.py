@@ -70,7 +70,7 @@ def process_input_with_openai(user_input):
         temperature=0.5,
     )
 
-    return response.choices[0].text.strip(), response
+    return response.choices[0].text.strip()
 
 
 
