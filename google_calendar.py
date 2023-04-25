@@ -111,8 +111,11 @@ def callback():
 # Create an event in google calendar
 def create_google_calendar_event(event_json, credentials):
     try:
-        service = build('calendar', 'v3', credentials=credentials, cache_discovery=False)
+        from google.oauth2.credentials import Credentials
 
+        user_credentials = Credentials.from_authorized_user_info(info=credentials)
+        service = build('calendar', 'v3', credentials=user_credentials, cache_discovery=False)
+        
         event = service.events().insert(calendarId='primary', body=event_json).execute()
         return f"Event created: {event['htmlLink']}"
 
