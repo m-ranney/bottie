@@ -24,14 +24,16 @@ SCOPES = ['https://www.googleapis.com/auth/calendar']
 def create_event():
     event_json = None
     success_message = None
+    openai_response = None
     
     # If the user is not logged in, redirect to the login page
     if request.method == 'POST':
         user_input = request.form['event_input']
-        event_json = process_input_with_openai(user_input)
+        event_json, openai_response = process_input_with_openai(user_input)
 
         # Store event_json in session
         session['event_json'] = event_json
+        session['openai_response'] = openai_response
       
         # Load the user's credentials
         if os.environ.get("STORED_CREDENTIALS_JSON"):
@@ -51,7 +53,7 @@ def create_event():
         # Call the create_google_calendar_event function to create the event
         success_message = create_google_calendar_event(event_json, credentials)
   
-    return render_template('create_event.html', event_json=event_json, success_message=success_message)
+    return render_template('create_event.html', event_json=event_json, success_message=success_message, openai_response=openai_response)
 
 
 # Process the input from user and process with the OpenAI API
