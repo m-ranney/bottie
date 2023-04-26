@@ -108,7 +108,8 @@ def callback():
     event_json = session.get('event_json')
     if event_json:
         success_message = create_google_calendar_event(event_json, credentials)
-        return f"Event created: {success_message}"
+        session['success_message'] = success_message  # Store the success_message in the session
+        return redirect(url_for('index'))  # Redirect to the index page
   
     try:
         # Use the credentials to access the Google Calendar API

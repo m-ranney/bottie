@@ -7,4 +7,14 @@
     <!-- Add buttons for different paths here -->
     <button onclick="location.href='/create'">Create Calendar Event</button>
 
+    {% if success_message %}
+      <h3>Event created successfully:</h3>
+      <p>{{ success_message }}</p>
+    {% endif %}
+    
+    {% if event_json %}
+      <h3>Event details:</h3>
+      <pre>{{ event_json|tojson|safe }}</pre>
+    {% endif %}
+
 {% endblock %}

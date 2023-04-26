@@ -9,7 +9,9 @@ app.secret_key = os.environ['FLASK_SECRET_KEY']
 # Route to the Home page
 @app.route('/')
 def home():
-    return render_template('index.html')
+    success_message = session.pop('success_message', None)  # Get the success_message from the session and remove it
+    event_json = session.pop('event_json', None)  # Get the event_json from the session and remove it
+    return render_template('index.html', success_message=success_message, event_json=event_json)
 
 # Route to the Create Event page
 @app.route('/create')
