@@ -1,6 +1,7 @@
 body {
   font-family: 'Arial', sans-serif;
   padding: 20px;
+  background-image: linear-gradient(to bottom, #36d1dc, #5b86e5);
 }
 
 h1 {
@@ -45,8 +46,9 @@ button:hover,
 
 /* New styles */
 
-.navbar {
-  background-image: linear-gradient(to right, #36d1dc, #5b86e5);
+.navbar,
+.footer {
+  background-color: rgba(220, 220, 220, 0.7);
 }
 
 .navbar,
@@ -67,4 +69,9 @@ body > *:not(.navbar) {
   transform: scale(1.03);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+}
+
+.bot-image {
+  max-width: 300px;
+  height: auto;
 }
