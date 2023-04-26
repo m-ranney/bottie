@@ -1,6 +1,13 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   font-family: 'Arial', sans-serif;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
   background-image: linear-gradient(to bottom, #36d1dc, #5b86e5);
 }
 
@@ -79,4 +86,23 @@ body > *:not(.navbar) {
 
 .container {
   height: 100%;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
