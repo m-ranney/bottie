@@ -1,29 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <h1>Welcome to Bottie!</h1>
-      <p>Click the cards below to navigate through the app:</p>
-    </div>
-    <div class="col-md-6 text-center">
-      <img src="{{ url_for('static', filename='images/bottie_image.jpg') }}" alt="Bot Image" class="bot-image">
-    </div>
-  </div>
-  
-  <div class="row">
-    <!-- Add cards for different paths here -->
-    <div class="col-md-4">
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Create Calendar Event</h5>
-          <p class="card-text">Create a new event in your Google Calendar.</p>
-          <a href="/create" class="btn btn-primary">Go</a>
-        </div>
+  <div class="row h-100">
+    <div class="col-md-6 h-100 d-flex flex-column justify-content-between">
+      <h1 class="mb-5">Welcome to Bottie!</h1>
+      <div class="d-flex justify-content-center">
+        <button onclick="location.href='/create'">Create Calendar Event</button>
       </div>
     </div>
-    <!-- Add more cards here for other features -->
+    <div class="col-md-6 h-100 d-flex justify-content-center align-items-center">
+      <img src="{{ url_for('static', filename='images/bottie-image.jpg') }}" class="bot-image" alt="Bot Image">
+    </div>
   </div>
-</div>
 {% endblock %}
