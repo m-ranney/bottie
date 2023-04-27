@@ -9,103 +9,58 @@
       <button type="submit">Submit Task</button>
     </form>
     <br>
-    <!-- Div for previewing task and subtasks -->
-    <div id="preview-container" style="display:none;">
-      <h3 id="preview-task"></h3>
-      <ul id="preview-subtasks">
-      </ul>
-      <button id="save-btn">Save Task and Subtasks</button>
-    </div>
-    <br>
-    <div id="tasks-container">
-      {% for task in tasks %}
-        <div class="card">
-          <div class="card-body">
-            <h3>{{ task.task }}</h3>
-            <ul>
-              {% for subtask in subtasks %}
-                {% if subtask.task_id == task.id %}
-                  <li>
-                    <form method="post" action="{{ url_for('steps_bp.update_status', subtask_id=subtask.id) }}">
-                      <input type="checkbox" name="status" value="1" onchange="this.form.submit()" {% if subtask.status %}checked{% endif %}>
-                      {{ subtask.subtask }}
-                    </form>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+    <!-- Table for displaying task and subtasks -->
+    <table id="task-table" style="display:none;">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Subtask</th>
+        </tr>
+      </thead>
+      <tbody id="task-table-body">
+      </tbody>
+    </table>
   </div>
 
   <script>
-    // Helper function to create a list item element with the given text
-    function createListItem(text) {
-      const li = document.createElement('li');
-      li.textContent = text;
-      return li;
-    }
+    document.getElementById("task-form").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const taskInput = document.getElementById("task");
+      const task = taskInput.value;
+      taskInput.value = "";
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const taskForm = document.getElementById('task-form');
-      const saveBtn = document.getElementById('save-btn');
-      const previewContainer = document.getElementById('preview-container');
-      const previewTask = document.getElementById('preview-task');
-      const previewSubtasks = document.getElementById('preview-subtasks');
-
-      taskForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const taskInput = document.getElementById('task');
-        const task = taskInput.value.trim();
-
-        if (!task) {
-          alert('Please enter a task.');
-          return;
-        }
-
-        const response = await fetch('/steps/api/generate_subtasks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ task }),
-        });
-
-        if (response.ok) {
-          const subtasks = await response.json();
-          previewTask.textContent = task;
-          previewSubtasks.innerHTML = '';
-          subtasks.forEach((subtask) => {
-            previewSubtasks.appendChild(createListItem(subtask));
-          });
-          previewContainer.style.display = 'block';
-        } else {
-          alert('Error generating subtasks. Please try again.');
-        }
+      const response = await fetch("/steps/api_generate_subtasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ task: task })
       });
 
-      saveBtn.addEventListener('click', async () => {
-        const task = previewTask.textContent;
-        const subtasks = Array.from(previewSubtasks.children).map((li) => li.textContent);
+      if (response.ok) {
+        const data = await response.json();
+        const subtasks = data.subtasks;
+        const tableBody = document.getElementById("task-table-body");
+        tableBody.innerHTML = "";
 
-        const response = await fetch('/steps/save', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ task, subtasks }),
-        });
+        for (const subtask of subtasks) {
+          const row = document.createElement("tr");
+          const taskCell = document.createElement("td");
+          const subtaskCell = document.createElement("td");
 
-        if (response.ok) {
-          alert('Task and subtasks saved successfully.');
-          location.reload();
-        } else {
-          alert('Error saving task and subtasks. Please try again.');
+          taskCell.textContent = task;
+          subtaskCell.textContent = subtask;
+
+          row.appendChild(taskCell);
+          row.appendChild(subtaskCell);
+          tableBody.appendChild(row);
         }
-      });
+
+        document.getElementById("task-table").style.display = "table";
+      } else {
+        alert("Error generating subtasks. Please try again.");
+      }
     });
   </script>
-
 {% endblock %}
+

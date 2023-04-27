@@ -30,62 +30,14 @@ def generate_subtasks(prompt: str) -> List[str]:
     subtasks = subtasks_raw.split("\n")
     return [subtask.strip() for subtask in subtasks if subtask.strip()]
 
-@steps_bp.route('/steps', methods=['GET'])
-def steps():
-    tasks = supabase.table('tasks').select('*').execute().get('data', [])
-    subtasks = supabase.table('subtasks').select('*').execute().get('data', [])
-    return render_template('steps.html', tasks=tasks, subtasks=subtasks)
-
-@steps_bp.route('/steps', methods=['POST'])
-def add_task():
-    task = request.form.get('task')
-    subtasks = generate_subtasks(task)
-
-    response = supabase.table('tasks').insert({'task': task}).execute()
-
-    if response.get("status_code") == 201:
-        task_id = response["data"][0]["id"]
-        for subtask in subtasks:
-            supabase.table('subtasks').insert({'task_id': task_id, 'subtask': subtask, 'status': False}).execute()
-    else:
-        # Handle the error response
-        print("Error:", response)
-
-    return redirect(url_for('steps_bp.steps'))
-
-@steps_bp.route('/steps/save', methods=['POST'])
-def save_task_and_subtasks():
+@steps_bp.route('/steps/api_generate_subtasks', methods=['POST'])
+def api_generate_subtasks():
     data = request.get_json()
     task = data.get('task', '')
-    subtasks = data.get('subtasks', [])
 
     if not task:
         return jsonify({"error": "Task cannot be empty"}), 400
 
-    task_insert = supabase.table('tasks').insert({'task': task}).execute()
-
-    if 'id' not in task_insert['data']:
-        return jsonify({"error": "Error saving task"}), 500
-
-    task_id = task_insert['data']['id']
-
-    for subtask in subtasks:
-        supabase.table('subtasks').insert({'task_id': task_id, 'subtask': subtask, 'status': False}).execute()
-
-    return jsonify({"message": "Task and subtasks saved successfully"}), 200
-
-@steps_bp.route('/update_status/<int:subtask_id>', methods=['POST'])
-def update_status(subtask_id):
-    new_status = request.form.get('status') == '1'
-    supabase.table('subtasks').update({'status': new_status}).eq('id', subtask_id).execute()
-    return redirect(url_for('steps_bp.steps'))
-
-@steps_bp.route('/steps/api/generate_subtasks', methods=['POST'])
-def api_generate_subtasks():
-    task = request.json.get('task')
-    if not task:
-        return jsonify({"error": "Task is required"}), 400
-
     subtasks = generate_subtasks(task)
-    return jsonify(subtasks)
 
+    return jsonify({"subtasks": subtasks}), 200
