@@ -80,3 +80,12 @@ def update_status(subtask_id):
     supabase.table('subtasks').update({'status': new_status}).eq('id', subtask_id).execute()
     return redirect(url_for('steps_bp.steps'))
 
+@steps_bp.route('/steps/api/generate_subtasks', methods=['POST'])
+def api_generate_subtasks():
+    task = request.json.get('task')
+    if not task:
+        return jsonify({"error": "Task is required"}), 400
+
+    subtasks = generate_subtasks(task)
+    return jsonify(subtasks)
+
