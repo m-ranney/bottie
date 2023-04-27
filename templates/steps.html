@@ -39,4 +39,73 @@
       {% endfor %}
     </div>
   </div>
+
+  <script>
+    // Helper function to create a list item element with the given text
+    function createListItem(text) {
+      const li = document.createElement('li');
+      li.textContent = text;
+      return li;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const taskForm = document.getElementById('task-form');
+      const saveBtn = document.getElementById('save-btn');
+      const previewContainer = document.getElementById('preview-container');
+      const previewTask = document.getElementById('preview-task');
+      const previewSubtasks = document.getElementById('preview-subtasks');
+
+      taskForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const taskInput = document.getElementById('task');
+        const task = taskInput.value.trim();
+
+        if (!task) {
+          alert('Please enter a task.');
+          return;
+        }
+
+        const response = await fetch('/steps/api/generate_subtasks', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ task }),
+        });
+
+        if (response.ok) {
+          const subtasks = await response.json();
+          previewTask.textContent = task;
+          previewSubtasks.innerHTML = '';
+          subtasks.forEach((subtask) => {
+            previewSubtasks.appendChild(createListItem(subtask));
+          });
+          previewContainer.style.display = 'block';
+        } else {
+          alert('Error generating subtasks. Please try again.');
+        }
+      });
+
+      saveBtn.addEventListener('click', async () => {
+        const task = previewTask.textContent;
+        const subtasks = Array.from(previewSubtasks.children).map((li) => li.textContent);
+
+        const response = await fetch('/steps/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ task, subtasks }),
+        });
+
+        if (response.ok) {
+          alert('Task and subtasks saved successfully.');
+          location.reload();
+        } else {
+          alert('Error saving task and subtasks. Please try again.');
+        }
+      });
+    });
+  </script>
+
 {% endblock %}
