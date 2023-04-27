@@ -33,19 +33,29 @@ def generate_subtasks(prompt: str) -> List[str]:
 @steps_bp.route('/steps', methods=['GET'])
 def steps():
     tasks = supabase.table('tasks').select('*').execute()
-    return render_template('steps.html', tasks=tasks)
+    subtasks = supabase.table('subtasks').select('*').execute()
+    return render_template('steps.html', tasks=tasks, subtasks=subtasks)
 
 @steps_bp.route('/steps', methods=['POST'])
 def add_task():
     task = request.form.get('task')
     subtasks = generate_subtasks(task)
 
-    task_id = supabase.table('tasks').insert({'task': task, 'subtasks': subtasks}).execute()['id']
+    response = supabase.table('tasks').insert({'task': task}).execute()
+
+    if response.get("status_code") == 201:
+        task_id = response["data"][0]["id"]
+        for subtask in subtasks:
+            supabase.table('subtasks').insert({'task_id': task_id, 'subtask': subtask, 'status': False}).execute()
+    else:
+        # Handle the error response
+        print("Error:", response)
 
     return redirect(url_for('steps_bp.steps'))
 
-@steps_bp.route('/update_status/<int:task_id>', methods=['POST'])
-def update_status(task_id):
+@steps_bp.route('/update_status/<int:subtask_id>', methods=['POST'])
+def update_status(subtask_id):
     new_status = request.form.get('status') == '1'
-    supabase.table('tasks').update({'status': new_status}).eq('id', task_id).execute()
+    supabase.table('subtasks').update({'status': new_status}).eq('id', subtask_id).execute()
     return redirect(url_for('steps_bp.steps'))
+
