@@ -32,8 +32,8 @@ def generate_subtasks(prompt: str) -> List[str]:
 
 @steps_bp.route('/steps', methods=['GET'])
 def steps():
-    tasks = supabase.table('tasks').select('*').execute()
-    subtasks = supabase.table('subtasks').select('*').execute()
+    tasks = supabase.table('tasks').select('*').execute().get('data', [])
+    subtasks = supabase.table('subtasks').select('*').execute().get('data', [])
     return render_template('steps.html', tasks=tasks, subtasks=subtasks)
 
 @steps_bp.route('/steps', methods=['POST'])
