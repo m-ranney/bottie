@@ -25,12 +25,13 @@ def generate_subtasks(prompt: str) -> List[str]:
         presence_penalty=0,
         n=1,
     )
-
     return response
 
-@steps_bp.route('/subtasks')
+@steps_bp.route('/subtasks', methods=['POST'])
 def show_subtasks():
-    prompt = "Example Task"  # replace with your task
+    prompt = request.form['task']  # get the task input from the form
     subtasks = generate_subtasks(prompt)
-    return render_template('steps.html', subtasks=subtasks)
+    subtasks_list = subtasks.choices[0].text.split('\n')  # convert the response to a list of subtasks
+    return render_template('steps.html', prompt=prompt, subtasks=subtasks_list)
+
 

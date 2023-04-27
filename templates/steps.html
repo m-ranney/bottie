@@ -9,28 +9,17 @@
       <button type="submit">Submit Task</button>
     </form>
     <br>
-    <!-- Table for displaying task and subtasks -->
-    <table id="task-table">
-      <thead>
-        <tr>
-          <th>Task</th>
-          <th>Subtask</th>
-        </tr>
-      </thead>
-      <tbody id="task-table-body">
-        <tr>
-          <td>{{ prompt }}</td>
-          <td>
-            <ul>
-              {% for subtask in subtasks.choices[0].text.split('\n') %}
-                <li>{{ subtask }}</li>
-              {% endfor %}
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- List for displaying subtasks -->
+    <div id="subtasks">
+      {% if subtasks %}
+        <h2>Subtasks:</h2>
+        <ul>
+          {% for subtask in subtasks %}
+            <li>{{ subtask }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
   </div>
-
 {% endblock %}
 
