@@ -11,14 +11,10 @@
     <br>
     <!-- List for displaying subtasks -->
     <div id="subtasks">
-      {% if subtasks %}
-        <h2>Subtasks:</h2>
+      <h2>Subtasks:</h2>
         <ul>
-          {% for subtask in subtasks %}
             <li>{{ subtask }}</li>
-          {% endfor %}
         </ul>
-      {% endif %}
     </div>
   </div>
 {% endblock %}
