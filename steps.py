@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 import openai
 import os
 from supabase_py import create_client, Client
@@ -52,6 +52,27 @@ def add_task():
         print("Error:", response)
 
     return redirect(url_for('steps_bp.steps'))
+
+@steps_bp.route('/steps/save', methods=['POST'])
+def save_task_and_subtasks():
+    data = request.get_json()
+    task = data.get('task', '')
+    subtasks = data.get('subtasks', [])
+
+    if not task:
+        return jsonify({"error": "Task cannot be empty"}), 400
+
+    task_insert = supabase.table('tasks').insert({'task': task}).execute()
+
+    if 'id' not in task_insert['data']:
+        return jsonify({"error": "Error saving task"}), 500
+
+    task_id = task_insert['data']['id']
+
+    for subtask in subtasks:
+        supabase.table('subtasks').insert({'task_id': task_id, 'subtask': subtask, 'status': False}).execute()
+
+    return jsonify({"message": "Task and subtasks saved successfully"}), 200
 
 @steps_bp.route('/update_status/<int:subtask_id>', methods=['POST'])
 def update_status(subtask_id):
