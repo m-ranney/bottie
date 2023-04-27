@@ -10,7 +10,7 @@
     </form>
     <br>
     <!-- Table for displaying task and subtasks -->
-    <table id="task-table" style="display:none;">
+    <table id="task-table">
       <thead>
         <tr>
           <th>Task</th>
@@ -18,49 +18,19 @@
         </tr>
       </thead>
       <tbody id="task-table-body">
+        <tr>
+          <td>{{ prompt }}</td>
+          <td>
+            <ul>
+              {% for subtask in subtasks.choices[0].text.split('\n') %}
+                <li>{{ subtask }}</li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 
-  <script>
-    document.getElementById("task-form").addEventListener("submit", async function (event) {
-      event.preventDefault();
-      const taskInput = document.getElementById("task");
-      const task = taskInput.value;
-      taskInput.value = "";
-
-      const response = await fetch("/steps/api_generate_subtasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ task: task })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const subtasks = data.subtasks;
-        const tableBody = document.getElementById("task-table-body");
-        tableBody.innerHTML = "";
-
-        for (const subtask of subtasks) {
-          const row = document.createElement("tr");
-          const taskCell = document.createElement("td");
-          const subtaskCell = document.createElement("td");
-
-          taskCell.textContent = task;
-          subtaskCell.textContent = subtask;
-
-          row.appendChild(taskCell);
-          row.appendChild(subtaskCell);
-          tableBody.appendChild(row);
-        }
-
-        document.getElementById("task-table").style.display = "table";
-      } else {
-        alert("Error generating subtasks. Please try again.");
-      }
-    });
-  </script>
 {% endblock %}
 
