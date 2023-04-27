@@ -7,7 +7,7 @@ from typing import List, Dict
 steps_bp = Blueprint('steps_bp', __name__, template_folder='templates')
 
 # Initialize Supabase client
-supabase_url = os.environ['https://yoelhlhpvqxcdarwuool.supabase.co']
+supabase_url = os.environ['SUPABASE_URL']
 supabase_key = os.environ['SUPABASE_KEY']
 supabase: Client = create_client(supabase_url, supabase_key)
 
