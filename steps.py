@@ -30,14 +30,15 @@ def generate_subtasks(prompt: str) -> List[str]:
     subtasks = subtasks_raw.split("\n")
     return [subtask.strip() for subtask in subtasks if subtask.strip()]
 
-@steps_bp.route('/steps/api_generate_subtasks', methods=['POST'])
+@steps_bp.route('/api_generate_subtasks', methods=['POST'])
 def api_generate_subtasks():
-    data = request.get_json()
-    task = data.get('task', '')
+    task = request.form.get('task')
+    if task:
+        try:
+            subtasks = generate_subtasks(task)
+            return jsonify({"subtasks": subtasks})
+        except Exception as e:
+            print(f"Error generating subtasks: {e}")
+            return jsonify({"error": "Error generating subtasks. Please try again."}), 500
+    return jsonify({"error": "Invalid task input. Please try again."}), 400
 
-    if not task:
-        return jsonify({"error": "Task cannot be empty"}), 400
-
-    subtasks = generate_subtasks(task)
-
-    return jsonify({"subtasks": subtasks}), 200
