@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 app.register_blueprint(calendar_bp, url_prefix='/calendar')
-app.register_blueprint(steps_bp)
+app.register_blueprint(steps_bp, url_prefix='/steps')
 app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 # Route to the Home page
