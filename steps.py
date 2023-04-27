@@ -12,7 +12,7 @@ supabase_key = os.environ['SUPABASE_KEY']
 supabase: Client = create_client(supabase_url, supabase_key)
 
 # Configure OpenAI API
-openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = os.environ['OPENAI_API_KEY_CE']
 
 def generate_subtasks(prompt: str) -> List[str]:
     response = openai.Completion.create(
