@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 import openai
 import os
 import json
-from supabase_py import create_client, Client, async_create_client
+from supabase_py import create_client, Client
 from typing import List, Dict
 from asyncio import get_event_loop
 
@@ -49,22 +49,21 @@ def generate_subtasks(task_input):
     return response
 
 
+from supabase_py import create_client, Client
+
 async def insert_task(task_name: str) -> Dict:
-    async with async_create_client(supabase_url, supabase_key) as supabase:
-        response = await supabase.from_("tasks").insert({"task_name": task_name})
+    supabase = create_client(supabase_url, supabase_key)
+    response = await supabase.from_("tasks").insert({"task_name": task_name})
     return response['data'][0]
 
 async def insert_subtasks(task_id: int, subtasks: List[str]):
-    async with async_create_client(supabase_url, supabase_key) as supabase:
-        for subtask_name in subtasks:
-            await supabase.from_("subtasks").insert({"task_id": task_id, "subtask_name": subtask_name})
+    supabase = create_client(supabase_url, supabase_key)
+    for subtask_name in subtasks:
+        await supabase.from_("subtasks").insert({"task_id": task_id, "subtask_name": subtask_name})
 
 async def get_tasks_and_subtasks():
-    async with async_create_client(supabase_url, supabase_key) as supabase:
-        tasks_response = await supabase.from_("tasks").select("*")
-        subtasks_response = await supabase.from_("subtasks").select("*")
+    supabase = create_client(supabase_url, supabase_key)
+    tasks_response = await supabase.from_("tasks").select("*")
+    subtasks_response = await supabase.from_("subtasks").select("*")
     return tasks_response['data'], subtasks_response['data']
-
-
-
 
