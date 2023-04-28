@@ -8,4 +8,3 @@ google-auth-httplib2
 google-auth-oauthlib
 openai
 supabase-py
-supabase-sync==0.6.0
