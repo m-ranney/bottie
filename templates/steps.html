@@ -1,21 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container">
     <h1>Step by Step Guide</h1>
-    <form id="task-form">
-      <label for="task">Enter a task:</label>
-      <input type="text" name="task" id="task" required>
-      <button type="submit">Submit Task</button>
+    <form action="/steps" method="post">
+        <div class="form-group">
+            <label for="task_details">Enter task to breakdown:</label>
+            <textarea name="task_input" id="task_details" class="form-control" rows="4" required></textarea>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Create Subtasks">
     </form>
-    <br>
-    <!-- List for displaying subtasks -->
-    <div id="subtasks">
-      <h2>Subtasks:</h2>
-        <ul>
-            <li>{{ subtask }}</li>
-        </ul>
-    </div>
-  </div>
+  
+    {% if subtasks_json %}
+        <h3>Generated Subtasks JSON:</h3>
+        <pre>{{ subtasks_json }}</pre>
+    {% endif %}
+
 {% endblock %}
 
