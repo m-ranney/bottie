@@ -22,18 +22,9 @@ def steps():
     if request.method == 'POST':
         task_input = request.form.get('task_input')
         response = generate_subtasks(task_input)
-        subtasks_text = response.get('choices')[0].get('text')
-        subtasks_list = subtasks_text.strip().split("\n")
-        
-        task_id = get_event_loop().run_until_complete(insert_task(task_input))
-        get_event_loop().run_until_complete(insert_subtasks(task_id['id'], subtasks_list))
-        
-        tasks, subtasks = get_event_loop().run_until_complete(get_tasks_and_subtasks())
-        return render_template('steps.html', tasks=tasks, subtasks=subtasks)
-
-    tasks, subtasks = get_event_loop().run_until_complete(get_tasks_and_subtasks())
-    return render_template('steps.html', tasks=tasks, subtasks=subtasks)
-
+        subtasks_json = response.get('choices')[0].get('text')
+        return render_template('steps.html', subtasks_json=subtasks_json)
+    return render_template('steps.html')
 
 def generate_subtasks(task_input):
     response = openai.Completion.create(
@@ -48,18 +39,4 @@ def generate_subtasks(task_input):
     )
     return response
 
-async def insert_task(task_name):
-    response = await supabase.from_("tasks").insert([{"task_name": task_name}])
-    return response['data'][0]['id']
-
-async def insert_subtasks(task_id: int, subtasks: List[str]):
-    supabase = create_client(supabase_url, supabase_key)
-    for subtask_name in subtasks:
-        await supabase.from_("subtasks").insert({"task_id": task_id, "subtask_name": subtask_name})
-
-async def get_tasks_and_subtasks():
-    supabase = create_client(supabase_url, supabase_key)
-    tasks_response = await supabase.from_("tasks").select("*")
-    subtasks_response = await supabase.from_("subtasks").select("*")
-    return tasks_response['data'], subtasks_response['data']
 
