@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Step by Step Guide</h1>
-    <form action="/steps" method="post">
+    <form action="{{ url_for('steps_bp.steps') }}" method="post">
         <div class="form-group">
             <label for="task_details">Enter task to breakdown:</label>
             <textarea name="task_input" id="task_details" class="form-control" rows="4" required></textarea>
