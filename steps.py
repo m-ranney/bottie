@@ -48,10 +48,9 @@ def generate_subtasks(task_input):
     )
     return response
 
-async def insert_task(task_name: str) -> Dict:
-    supabase = create_client(supabase_url, supabase_key)
-    response = await supabase.from_("tasks").insert([{"task_name": task_name}]).execute()
-    return response['data'][0]
+async def insert_task(task_name):
+    response = await supabase.from_("tasks").insert([{"task_name": task_name}])
+    return response['data'][0]['id']
 
 async def insert_subtasks(task_id: int, subtasks: List[str]):
     supabase = create_client(supabase_url, supabase_key)
