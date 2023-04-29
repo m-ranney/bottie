@@ -1,6 +1,7 @@
 from flask import Flask, render_template, session
 from google_calendar import create_oauth_flow, calendar_bp
 from steps import steps_bp
+from meals import meal_plan_bp
 import os
 
 app = Flask(__name__)
