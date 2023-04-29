@@ -6,6 +6,7 @@ import os
 app = Flask(__name__)
 app.register_blueprint(calendar_bp, url_prefix='/calendar')
 app.register_blueprint(steps_bp, url_prefix='/steps')
+app.register_blueprint(meal_plan_bp, url_prefix='/meal_plan')
 app.secret_key = os.environ['FLASK_SECRET_KEY']
 
 # Route to the Home page
@@ -26,6 +27,11 @@ def create():
 @app.route('/steps')
 def steps():
     return render_template('steps.html')
+
+# Route to the Meal Plan page
+@app.route('/meal_plan')
+def meal_plan():
+    return render_template('meal_plan.html')
 
 
 if __name__ == '__main__':
