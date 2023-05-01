@@ -12,25 +12,35 @@
   
     {% if enumerated_subtasks %}
         <h3>Generated Subtasks:</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Subtask</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for idx, subtask in enumerated_subtasks %}
-                    <tr>
-                        <th scope="row">{{ idx }}</th>
-                        <td>{{ subtask }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% for idx, subtask in enumerated_subtasks %}
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="subtask-{{ idx }}"
+              onchange="updateSubtaskCompletion({{ subtask[0] }}, this.checked)"
+            >
+            <label class="form-check-label" for="subtask-{{ idx }}">{{ subtask[1] }}</label>
+          </div>
+        {% endfor %}
     {% endif %}
-
-    
-
 {% endblock %}
 
+{% block extra_js %}
+<script>
+  function updateSubtaskCompletion(subtaskId, isChecked) {
+    // Make an AJAX request to update the completion status in the backend
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/update_subtask_completion');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        console.log('Subtask updated successfully');
+      } else {
+        console.error('Error updating subtask');
+      }
+    };
+    xhr.send(`subtask_id=${subtaskId}&is_complete=${isChecked}`);
+  }
+</script>
+{% endblock %}
