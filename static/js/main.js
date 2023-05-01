@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var buttons = document.querySelectorAll('.custom-button');
+  var cards = document.querySelectorAll('.card');
 
-  buttons.forEach(function (button) {
-    button.addEventListener('click', function () {
-      alert('You clicked a custom button!');
+  cards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      var targetUrl = this.getAttribute('data-href');
+      if (targetUrl) {
+        location.href = targetUrl;
+      }
     });
   });
 });
