@@ -10,7 +10,7 @@
         <input type="submit" class="btn btn-primary" value="Create Subtasks">
     </form>
   
-    {% if subtasks %}
+    {% if enumerated_subtasks %}
         <h3>Generated Subtasks:</h3>
         <table class="table">
             <thead>
@@ -20,15 +20,16 @@
                 </tr>
             </thead>
             <tbody>
-                {% for idx, subtask in enumerate(subtasks) %}
+                {% for idx, subtask in enumerated_subtasks %}
                     <tr>
-                        <th scope="row">{{ idx + 1 }}</th>
+                        <th scope="row">{{ idx }}</th>
                         <td>{{ subtask }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% endif %}
+
     
 
 {% endblock %}

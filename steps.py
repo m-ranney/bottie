@@ -24,8 +24,10 @@ def steps():
         response = generate_subtasks(task_input)
         subtasks_text = response.get('choices')[0].get('text')
         subtasks = parse_subtasks(subtasks_text)
-        return render_template('steps.html', subtasks=subtasks)
+        enumerated_subtasks = list(enumerate(subtasks, start=1))
+        return render_template('steps.html', enumerated_subtasks=enumerated_subtasks)
     return render_template('steps.html')
+
 
 
 def generate_subtasks(task_input):
