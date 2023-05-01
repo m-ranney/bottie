@@ -20,7 +20,7 @@
               id="subtask-{{ idx }}"
               onchange="updateSubtaskCompletion({{ subtask[0] }}, this.checked)"
             >
-            <label class="form-check-label" for="subtask-{{ idx }}">{{ subtask[1] }}</label>
+            <label class="form-check-label" for="subtask-{{ idx }}">{{ subtask }}</label>
           </div>
         {% endfor %}
     {% endif %}
