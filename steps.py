@@ -22,9 +22,11 @@ def steps():
     if request.method == 'POST':
         task_input = request.form.get('task_input')
         response = generate_subtasks(task_input)
-        subtasks_json = response.get('choices')[0].get('text')
-        return render_template('steps.html', subtasks_json=subtasks_json)
+        subtasks_text = response.get('choices')[0].get('text')
+        subtasks = parse_subtasks(subtasks_text)
+        return render_template('steps.html', subtasks=subtasks)
     return render_template('steps.html')
+
 
 def generate_subtasks(task_input):
     response = openai.Completion.create(
@@ -39,4 +41,7 @@ def generate_subtasks(task_input):
     )
     return response
 
+def parse_subtasks(subtasks_text: str) -> List[str]:
+    subtasks = [task.strip() for task in subtasks_text.strip().split('\n') if task.strip()]
+    return subtasks
 
