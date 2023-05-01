@@ -3,6 +3,7 @@ import openai
 import os
 import json
 from supabase_py import create_client, Client
+from supabase_service import create_task, create_subtasks
 from typing import List, Dict
 from asyncio import get_event_loop
 
@@ -21,13 +22,17 @@ openai.api_key = os.environ['OPENAI_API_KEY_CE']
 def steps():
     if request.method == 'POST':
         task_input = request.form.get('task_input')
+        task_id = create_task(supabase, task_input)  # Save the task and get its ID
+        
         response = generate_subtasks(task_input)
         subtasks_text = response.get('choices')[0].get('text')
         subtasks = parse_subtasks(subtasks_text)
+        
+        create_subtasks(supabase, task_id, subtasks)  # Save the subtasks
+
         enumerated_subtasks = list(enumerate(subtasks, start=1))
         return render_template('steps.html', enumerated_subtasks=enumerated_subtasks)
     return render_template('steps.html')
-
 
 
 def generate_subtasks(task_input):
