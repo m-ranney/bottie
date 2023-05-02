@@ -98,7 +98,7 @@ body > *:not(.navbar) {
 }
 
 .card {
-  background-color: #ffffff;
+  background-image: linear-gradient(to bottom, #c7d2ff, #0055ff);
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 15px;
