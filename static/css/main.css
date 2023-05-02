@@ -53,7 +53,12 @@ button:hover,
 
 /* New styles */
 
-.navbar,
+.navbar {
+  background-color: rgba(220, 220, 220, 0.7);
+  opacity: 0.0;
+}
+
+
 .footer {
   background-color: rgba(220, 220, 220, 0.7);
 }
@@ -112,8 +117,8 @@ body > *:not(.navbar) {
 }
 
 .navbar-image {
-  width: 120px;
-  height: 180px;
+  width: 80px;
+  height: 100px;
   object-fit: cover;
   border-radius: 5px;
 }
