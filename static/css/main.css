@@ -106,3 +106,14 @@ body > *:not(.navbar) {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
+
+.navbar-image-link {
+  padding-left: 15px;
+}
+
+.navbar-image {
+  width: 360px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 5px;
+}
