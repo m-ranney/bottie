@@ -92,7 +92,7 @@ body > *:not(.navbar) {
 .container {
   padding: 20px; /* Internal padding */
   margin: 20px; /* External padding */
-  background-color: transparent;
+  background-color: #f5faff;
 }
 
 .content {
@@ -100,7 +100,7 @@ body > *:not(.navbar) {
 }
 
 .card {
-  background-color: #f5faff
+  background-color: #f5faff;
   padding: 10px;
   margin-bottom: 20px;
   border-radius: 15px;
@@ -115,6 +115,7 @@ body > *:not(.navbar) {
 }
 
 .mb-3 {
+  margin-top: 20px;
   margin-bottom: 20px !important; 
 }
 
