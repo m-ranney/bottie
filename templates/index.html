@@ -20,8 +20,18 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 h-100 d-flex justify-content-center align-items-center">
-      <img src="{{ url_for('static', filename='images/bottie_image.jpg') }}" class="bot-image" alt="Bot Image">
+    <div class="col-md-6 h-100 d-flex flex-column justify-content-center align-items-center">
+      <form id="openai-form">
+        <div class="form-group">
+          <label for="input-text">Input Text:</label>
+          <input type="text" class="form-control" id="input-text" name="input-text" required>
+        </div>
+        <button type="submit" class="btn custom-button">Submit</button>
+      </form>
+      <div id="output-container" class="mt-4">
+        <h3>Output:</h3>
+        <div id="output-text"></div>
+      </div>
     </div>
   </div>
 {% endblock %}
