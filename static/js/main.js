@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var cards = document.querySelectorAll('.card');
-
-  cards.forEach(function (card) {
-    card.addEventListener('click', function () {
-      var targetUrl = this.getAttribute('data-href');
-      if (targetUrl) {
-        location.href = targetUrl;
+  // Event listener for clickable cards
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const url = card.getAttribute('data-href');
+      if (url) {
+        window.location.href = url;
       }
     });
   });
