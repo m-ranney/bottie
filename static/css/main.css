@@ -121,6 +121,14 @@ body > *:not(.navbar) {
   transition: all 0.3s ease;
 }
 
+.left-cards {
+  padding: 20px;
+  flex-grow: 1; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+}
+
 .mb-3 {
   margin-top: 20px;
   margin-bottom: 20px !important; 
