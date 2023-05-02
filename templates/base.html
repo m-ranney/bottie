@@ -12,8 +12,10 @@
 <body>
     {% include 'partials/_navbar.html' %}
    
-    <div class="container content">
-      {% block content %}{% endblock %}
+    <div class="d-flex align-items-center" style="min-height: 100vh;">
+      <div class="container content">
+        {% block content %}{% endblock %}
+      </div>
     </div>
 
     <footer class="footer">

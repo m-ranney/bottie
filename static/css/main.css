@@ -91,7 +91,7 @@ body > *:not(.navbar) {
 
 .container {
   padding: 20px; /* Internal padding */
-  margin: 20px; /* External padding */
+  margin: 20px auto; /* External padding */
   background-color: #f5faff;
 }
 
