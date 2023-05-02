@@ -11,8 +11,12 @@ body {
   background-image: linear-gradient(to bottom, #f2f2f3, #e5e7eb);
 }
 
-.d-flex.flex-column { /* Add this selector */
+.d-flex.flex-column {
   padding: 20px;
+  flex-grow: 1; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
 }
 
 h1 {
@@ -67,6 +71,7 @@ button:hover,
   background-color: transparent;
   box-shadow: none;
   border-radius: 15px 15px 0 0;
+  width: 100%; 
 }
 
 .navbar,
