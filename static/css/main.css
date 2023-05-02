@@ -112,8 +112,8 @@ body > *:not(.navbar) {
 }
 
 .navbar-image {
-  width: 360px;
-  height: 240px;
+  width: 120px;
+  height: 180px;
   object-fit: cover;
   border-radius: 5px;
 }
