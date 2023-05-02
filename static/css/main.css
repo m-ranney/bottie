@@ -90,7 +90,9 @@ body > *:not(.navbar) {
 }
 
 .container {
-  background-color: #f9f9f9;
+  padding: 20px; /* Internal padding */
+  margin: 20px; /* External padding */
+  background-color: transparent;
 }
 
 .content {
