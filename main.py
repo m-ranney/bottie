@@ -3,6 +3,7 @@ from google_calendar import create_oauth_flow, calendar_bp
 from steps import steps_bp
 from meals import meal_plan_bp
 import os
+import openai
 
 app = Flask(__name__)
 app.register_blueprint(calendar_bp, url_prefix='/calendar')
