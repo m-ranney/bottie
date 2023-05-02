@@ -126,6 +126,11 @@ body > *:not(.navbar) {
   margin-bottom: 20px !important; 
 }
 
+.fixed-gap {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .navbar-image-link {
   padding-left: 15px;
 }
