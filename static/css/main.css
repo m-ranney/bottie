@@ -60,17 +60,15 @@ button:hover,
 
 
 .footer {
-  background-color: rgba(220, 220, 220, 0.7);
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 15px 15px 0 0;
 }
 
 .navbar,
 .card,
 .container {
   border-radius: 15px;
-}
-
-.footer {
-  border-radius: 15px 15px 0 0;
 }
 
 body > *:not(.navbar) {
