@@ -11,6 +11,10 @@ body {
   background-image: linear-gradient(to bottom, #f2f2f3, #e5e7eb);
 }
 
+.d-flex.flex-column { /* Add this selector */
+  padding: 20px;
+}
+
 h1 {
   font-size: 2.5rem;
   color: #333;
