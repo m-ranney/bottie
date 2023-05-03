@@ -44,7 +44,7 @@ def generate_output(input_text):
         engine="text-davinci-002",
         prompt=f" {input_text}",
         temperature=0.7,
-        max_tokens=200,
+        max_tokens=500,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
