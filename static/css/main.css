@@ -113,7 +113,7 @@ body > *:not(.navbar) {
 .card:hover {
   transform: scale(0.98);
   box-shadow: 0px 0px 30px 1px rgba(55, 0, 255, 0.30);
-  border-radius: 20px;
+  border-radius: 40px;
   transition: all 0.3s ease;
 }
 
@@ -128,7 +128,7 @@ body > *:not(.navbar) {
   border: solid 5px transparent;
   border-image-source: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
   border-image-slice: 1;
-  border-radius: 20px;
+  border-radius: 40px;
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
