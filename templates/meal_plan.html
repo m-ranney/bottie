@@ -20,32 +20,7 @@
     {% endif %}
 
     {% if meal_plan_dict %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Day</th>
-                    <th scope="col">Meal Type</th>
-                    <th scope="col">Meal</th>
-                    <th scope="col">Select</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for meal_type, meals in meal_plan_dict.items() %}
-                    {% for meal_info in meals %}
-                        <tr>
-                            <th scope="row">{{ loop.index }}</th>
-                            <td>{{ meal_info.day }}</td>
-                            <td>{{ meal_type }}</td>
-                            <td>{{ meal_info.meal }}</td>
-                            <td>
-                                <input type="checkbox" class="form-check-input" id="{{ meal_type }}-{{ loop.index }}" name="{{ meal_type }}-{{ loop.index }}">
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {% endfor %}
-            </tbody>
-        </table>
+    <pre>{{ meal_plan_dict.output }}</pre>
     {% endif %}
 
 {% endblock %}
