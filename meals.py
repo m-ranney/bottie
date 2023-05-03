@@ -23,9 +23,10 @@ def meal_plan():
         num_days = request.form.get('num_days')
         meal_goal = request.form.get('meal_goal')
         response = generate_meal_plan(num_days, meal_goal)
-        meal_plan_json = response.get('choices')[0].get('text')
+        meal_plan_text = response.get('choices')[0].get('text').strip()
+        meal_plan_dict = meal_plan_to_dict(meal_plan_text)
         return render_template('meal_plan.html', meal_plan_json=meal_plan_json)
-    return render_template('meal_plan.html')
+    return render_template('meal_plan.html', meal_plan_dict=meal_plan_dict)
 
 def generate_meal_plan(num_days, meal_goal):
     response = openai.Completion.create(
@@ -39,3 +40,18 @@ def generate_meal_plan(num_days, meal_goal):
         n=1,
     )
     return response
+
+def meal_plan_to_dict(meal_plan_text):
+    lines = meal_plan_text.split('\n')
+    meal_plan_dict = {}
+    current_meal_type = None
+
+    for line in lines:
+        if line.endswith(':'):
+            current_meal_type = line[:-1]
+            meal_plan_dict[current_meal_type] = []
+        else:
+            meal_plan_dict[current_meal_type].append(line)
+
+    return meal_plan_dict
+
