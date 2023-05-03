@@ -20,7 +20,30 @@
     {% endif %}
 
     {% if meal_plan_dict %}
-    <pre>{{ meal_plan_dict.output }}</pre>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Day</th>
+          <th>Meal Type</th>
+          <th>Meal</th>
+          <th>Select</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for day, meals in meal_plan_dict.items() %}
+          {% for meal_type, meal in meals.items() %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ day }}</td>
+              <td>{{ meal_type }}</td>
+              <td>{{ meal }}</td>
+              <td><input type="checkbox" /></td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
     {% endif %}
 
 {% endblock %}

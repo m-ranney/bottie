@@ -43,7 +43,22 @@ def generate_meal_plan(num_days, meal_goal):
     return response
 
 def meal_plan_to_dict(meal_plan_text):
-    return {"output": meal_plan_text}
+    lines = meal_plan_text.split('\n')
+    meal_plan_dict = {}
 
+    for line in lines:
+        if not line:
+            continue
 
+        day, meal_type, meal = line.split(' - ')
+        day = day.strip()
 
+        if day not in meal_plan_dict:
+            meal_plan_dict[day] = {}
+
+        meal_type = meal_type.strip()
+        meal = meal.strip()
+
+        meal_plan_dict[day][meal_type] = meal
+
+    return meal_plan_dict
