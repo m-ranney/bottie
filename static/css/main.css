@@ -125,9 +125,9 @@ body > *:not(.navbar) {
   bottom: 0;
   background-image:  #f2f2f3;
   border: solid 5px transparent;
-  border-radius: 20px;
   border-image-source: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
   border-image-slice: 1;
+  border-radius: 20px;
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
