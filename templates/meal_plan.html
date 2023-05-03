@@ -24,6 +24,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Day</th>
                     <th scope="col">Meal Type</th>
                     <th scope="col">Meal</th>
                     <th scope="col">Select</th>
@@ -31,11 +32,12 @@
             </thead>
             <tbody>
                 {% for meal_type, meals in meal_plan_dict.items() %}
-                    {% for meal in meals %}
+                    {% for meal_info in meals %}
                         <tr>
                             <th scope="row">{{ loop.index }}</th>
+                            <td>{{ meal_info.day }}</td>
                             <td>{{ meal_type }}</td>
-                            <td>{{ meal }}</td>
+                            <td>{{ meal_info.meal }}</td>
                             <td>
                                 <input type="checkbox" class="form-check-input" id="{{ meal_type }}-{{ loop.index }}" name="{{ meal_type }}-{{ loop.index }}">
                             </td>
