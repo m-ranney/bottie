@@ -47,11 +47,14 @@ def meal_plan_to_dict(meal_plan_text):
     current_meal_type = None
 
     for line in lines:
+        if not line:
+            continue
         if line.endswith(':'):
             current_meal_type = line[:-1]
             meal_plan_dict[current_meal_type] = []
-        else current_meal_type is not None:
+        elif current_meal_type is not None:
             meal_plan_dict[current_meal_type].append(line)
 
     return meal_plan_dict
+
 
