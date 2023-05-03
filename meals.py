@@ -44,17 +44,20 @@ def generate_meal_plan(num_days, meal_goal):
 
 def meal_plan_to_dict(meal_plan_text):
     lines = meal_plan_text.split('\n')
-    meal_plan_dict = {"Breakfast": [], "Lunch": [], "Dinner": []}
-    current_day = None
+    meal_plan_dict = {}
+    day_counter = 1
 
     for line in lines:
         if not line:
             continue
-        if line.startswith("Day"):
-            current_day = line
-        elif current_day is not None:
-            meal_type, meal = line.split(": ")
-            meal_plan_dict[meal_type].append({"day": current_day, "meal": meal})
+        if line.startswith('Day '):
+            current_day = f"Day {day_counter}"
+            meal_plan_dict[current_day] = {}
+            day_counter += 1
+        elif ': ' in line:
+            meal_type, meal = line.split(': ')
+            meal_plan_dict[current_day][meal_type] = meal
 
     return meal_plan_dict
+
 
