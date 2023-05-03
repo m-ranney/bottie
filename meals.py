@@ -43,6 +43,7 @@ def generate_meal_plan(num_days, meal_goal):
     return response
 
 def meal_plan_to_dict(meal_plan_text):
+    meal_plan_text = meal_plan_text.replace('/n', '\n')
     lines = meal_plan_text.split('\n')
     meal_plan_dict = {}
 
