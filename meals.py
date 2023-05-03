@@ -50,7 +50,11 @@ def meal_plan_to_dict(meal_plan_text):
         if not line:
             continue
 
-        day, meal_type, meal = line.split(' - ')
+        parts = line.split(' - ')
+        if len(parts) != 3:
+            continue
+
+        day, meal_type, meal = parts
         day = day.strip()
 
         if day not in meal_plan_dict:
