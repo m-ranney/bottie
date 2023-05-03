@@ -19,13 +19,15 @@ openai.api_key = os.environ['OPENAI_API_KEY_CE']
 # Calls meal plan input from forms on meal_plan.html
 @meal_plan_bp.route('/meal_plan', methods=['GET', 'POST'])
 def meal_plan():
+    meal_plan_text = ''
+    meal_plan_dict = None
     if request.method == 'POST':
         num_days = request.form.get('num_days')
         meal_goal = request.form.get('meal_goal')
         response = generate_meal_plan(num_days, meal_goal)
         meal_plan_text = response.get('choices')[0].get('text').strip()
         meal_plan_dict = meal_plan_to_dict(meal_plan_text)
-    return render_template('meal_plan.html', meal_plan_dict=meal_plan_dict)
+    return render_template('meal_plan.html', meal_plan_dict=meal_plan_dict, meal_plan_text=meal_plan_text)
 
 def generate_meal_plan(num_days, meal_goal):
     response = openai.Completion.create(
