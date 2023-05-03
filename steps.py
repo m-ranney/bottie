@@ -37,7 +37,7 @@ def steps():
 
 def generate_subtasks(task_input):
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-003",
         prompt=f"Please provide a list of detailed subtasks required to complete the task: {task_input}. Each subtask should have a concrete start and finishing point. Be as descriptive as possible and return your response in a bulleted list format. Be creative in your response and in general lean towards using modern technology solutions to make the subtasks as efficient as possible.",
         temperature=0.7,
         max_tokens=200,
