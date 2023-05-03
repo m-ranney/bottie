@@ -118,9 +118,13 @@ body > *:not(.navbar) {
   box-shadow: 0px 0px 30px 1px rgba(55, 0, 255, 0.30);
 }
 
-.card-animation {
-  --border-size: 3px;
-  --border-angle: 0turn;
+.card-animation:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-image: conic-gradient(
       from var(--border-angle),
       transparent,
@@ -133,11 +137,11 @@ body > *:not(.navbar) {
     cover;
   background-position: center center;
   background-repeat: no-repeat;
+  border-radius: 20px;
   animation: bg-spin 3s linear infinite;
-}
-
-.card-animation:hover {
-  animation-play-state: paused;
+  --border-size: 3px;
+  --border-angle: 0turn;
+  z-index: -1;
 }
 
 @keyframes bg-spin {
