@@ -20,32 +20,32 @@
     {% endif %}
 
     {% if meal_plan_dict %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Day</th>
-          <th>Meal Type</th>
-          <th>Meal</th>
-          <th>Select</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% set counter = 1 %}
-        {% for day, meals in meal_plan_dict.items() %}
-          {% for meal_type, meal in meals.items() %}
-            <tr>
-              <td>{{ counter }}</td>
-              <td>{{ day }}</td>
-              <td>{{ meal_type }}</td>
-              <td>{{ meal }}</td>
-              <td><input type="checkbox" /></td>
-            </tr>
-            {% set counter = counter + 1 %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Day</th>
+            <th>Meal Type</th>
+            <th>Meal</th>
+            <th>Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% set counter = 1 %}
+          {% for day, meals in meal_plan_dict.items() %}
+            {% for meal_type, meal in meals.items() %}
+              <tr>
+                <td>{{ counter }}</td>
+                <td>{{ day }}</td>
+                <td>{{ meal_type }}</td>
+                <td>{{ meal }}</td>
+                <td><input type="checkbox" /></td>
+              </tr>
+              {% set counter = counter + 1 %}
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
     {% endif %}
 
 
