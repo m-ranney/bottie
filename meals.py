@@ -20,7 +20,7 @@ openai.api_key = os.environ['OPENAI_API_KEY_CE']
 @meal_plan_bp.route('/meal_plan', methods=['GET', 'POST'])
 def meal_plan():
     meal_plan_text = ''
-    meal_plan_dict = None
+    meal_plan_dict = {}
     if request.method == 'POST':
         num_days = request.form.get('num_days')
         meal_goal = request.form.get('meal_goal')
