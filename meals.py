@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 import openai
 import os
 import json
+import re
 from supabase_py import create_client, Client
 from typing import List, Dict
 from asyncio import get_event_loop
@@ -43,26 +44,15 @@ def generate_meal_plan(num_days, meal_goal):
     return response
 
 def meal_plan_to_dict(meal_plan_text):
-    meal_plan_text = meal_plan_text.replace('/n', '\n')
-    lines = meal_plan_text.split('\n')
     meal_plan_dict = {}
+    pattern = r'(Day \d+) - (Breakfast|Lunch|Dinner): ([\w\s]+[^\s])'
+    matches = re.findall(pattern, meal_plan_text)
 
-    for line in lines:
-        if not line:
-            continue
-
-        parts = line.split(' - ')
-        if len(parts) != 3:
-            continue
-
-        day, meal_type, meal = parts
-        day = day.strip()
+    for match in matches:
+        day, meal_type, meal = match
 
         if day not in meal_plan_dict:
             meal_plan_dict[day] = {}
-
-        meal_type = meal_type.strip()
-        meal = meal.strip()
 
         meal_plan_dict[day][meal_type] = meal
 
