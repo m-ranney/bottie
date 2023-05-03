@@ -32,7 +32,7 @@ def meal_plan():
 def generate_meal_plan(num_days, meal_goal):
     response = openai.Completion.create(
         engine="text-davinci-002",
-        prompt=f"Please provide a meal plan for {num_days} days, with a focus on {meal_goal} meals. Suggest meals for breakfast, lunch, and dinner. Be as descriptive as possible. Please use the format template in your response, and only include meals:---BEGIN FORMAT TEMPLATE---BREAKFAST: (Day 1 Breakfast.) (Day 2 Breakfast.) (Day 3 Breakfast.) etc..., LUNCH: (Day 1 Lunch.) (Day 2 Lunch.) (Day 3 Lunch.) etc..., DINNER: (Day 1 Dinner.) (Day 2 Dinner.) (Day 3 Dinner.) etc... ---END FORMAT TEMPLATE--- Add some variety to the meal suggestions. Apply the ability to buy ingredients that can be used in multiple selected dishes for more efficient grocery shopping.",
+        prompt=f"Please provide a meal plan for {num_days} days, with a focus on {meal_goal} meals. Suggest meals for breakfast, lunch, and dinner. Be as descriptive as possible. Please use the format template in your response, include a '.' as a delimiter after each meal, and only include meals:---BEGIN FORMAT TEMPLATE---BREAKFAST: (Day 1 Breakfast.) (Day 2 Breakfast.) (Day 3 Breakfast.) etc..., LUNCH: (Day 1 Lunch.) (Day 2 Lunch.) (Day 3 Lunch.) etc..., DINNER: (Day 1 Dinner.) (Day 2 Dinner.) (Day 3 Dinner.) etc... ---END FORMAT TEMPLATE--- Add some variety to the meal suggestions. Apply the ability to buy ingredients that can be used in multiple selected dishes for more efficient grocery shopping.",
         temperature=1,
         max_tokens=400,
         top_p=1,
