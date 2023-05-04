@@ -4,12 +4,8 @@
     <h1>Create Your Meal Plan</h1>
     <form action="{{ url_for('meal_plan_bp.meal_plan') }}" method="POST">
         <div class="form-group">
-            <label for="num_days">Number of Days:</label>
-            <input type="number" id="num_days" name="num_days" class="form-control" min="1" max="14" required>
-        </div>
-        <div class="form-group">
             <label for="meal_goal">Meal Goal:</label>
-            <input type="text" id="meal_goal" name="meal_goal" class="form-control" placeholder="e.g. healthy, Italian, easy to make" required>
+            <input type="text" id="meal_goal" name="meal_goal" class="form-control" placeholder="e.g. healthy, italian, easy to make, etc." required>
         </div>
         <input type="submit" class="btn btn-primary" value="Generate Meal Plan">
     </form>

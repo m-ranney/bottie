@@ -23,17 +23,16 @@ def meal_plan():
     meal_plan_text = ''
     meal_plan_dict = {}
     if request.method == 'POST':
-        num_days = request.form.get('num_days')
         meal_goal = request.form.get('meal_goal')
-        response = generate_meal_plan(num_days, meal_goal)
+        response = generate_meal_plan(meal_goal)
         meal_plan_text = response.get('choices')[0].get('text').strip()
         meal_plan_dict = meal_plan_to_dict(meal_plan_text)
     return render_template('meal_plan.html', meal_plan_dict=meal_plan_dict, meal_plan_text=meal_plan_text)
 
-def generate_meal_plan(num_days, meal_goal):
+def generate_meal_plan(meal_goal):
     response = openai.Completion.create(
         engine="text-davinci-002",
-        prompt=f"Please provide a meal plan for {num_days} days, with a focus on {meal_goal} meals. Suggest multiple meals for breakfast, lunch, and dinner. Be as descriptive as possible. Include meals using the following format template, with one meal per line, for your response:---BEGIN FORMAT TEMPLATE---(Meal Type): (Meal). (Meal Type): (Meal).---END FORMAT TEMPLATE--- An example is 'Breakfast: Greek yogurt with blueberries and granola. \n Breakfast: Protein bar and a banana with coffee. \n Lunch: Kale salad with roasted chicken, dried cranberries and toasted walnuts. /n Dinner: Grilled salmon with roasted Brussels sprouts and roasted sweet potato.' Add some variety to the meal suggestions. Apply the ability to buy ingredients that can be used in multiple selected dishes for more efficient grocery shopping.",
+        prompt=f"Please provide a meal plan with a focus on {meal_goal} meals. Suggest multiple meals for breakfast, lunch, and dinner. Suggest at least 10 meals. Be as descriptive as possible. Include meals using the following format template, with one meal per line, for your response:---BEGIN FORMAT TEMPLATE---(Meal Type): (Meal). (Meal Type): (Meal).---END FORMAT TEMPLATE--- An example is 'Breakfast: Greek yogurt with blueberries and granola. \n Breakfast: Protein bar and a banana with coffee. \n Lunch: Kale salad with roasted chicken, dried cranberries and toasted walnuts. /n Dinner: Grilled salmon with roasted Brussels sprouts and roasted sweet potato.' Add some variety to the meal suggestions. Apply the ability to buy ingredients that can be used in multiple selected dishes for more efficient grocery shopping.",
         temperature=1,
         max_tokens=400,
         top_p=1,
@@ -45,7 +44,7 @@ def generate_meal_plan(num_days, meal_goal):
 
 def meal_plan_to_dict(meal_plan_text):
     meal_plan_dict = {'meals': []}
-    pattern = r'(Breakfast|Lunch|Dinner): (.*?)(?=Breakfast|Lunch|Dinner|$)'
+    pattern = r'(Breakfast|Lunch|Dinner): (.*?)(?=(?<=\S) (?:Breakfast|Lunch|Dinner)|$)'
     matches = re.findall(pattern, meal_plan_text)
 
     for match in matches:
@@ -54,4 +53,5 @@ def meal_plan_to_dict(meal_plan_text):
         meal_plan_dict['meals'].append({'meal_type': meal_type, 'meal': meal})
 
     return meal_plan_dict
+
 
