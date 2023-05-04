@@ -42,22 +42,13 @@ def generate_meal_plan(meal_goal):
 
 def meal_plan_to_dict(meal_plan_text):
     meal_plan_dict = {'meals': []}
-    pattern = r'(?=(Breakfast|Lunch|Dinner))'
+    pattern = r'\n(?=(\d+\. ))'
     meal_strings = re.split(pattern, meal_plan_text)
 
-    # Updated regex pattern to handle numbered lists and other potential delimiters
-    meal_delimiter_pattern = r'[\n\.\-]'
-
     for i in range(1, len(meal_strings), 2):
-        meal_type = meal_strings[i].strip()
-        meal_descriptions = re.split(meal_delimiter_pattern, meal_strings[i + 1].strip())
-        meals = [meal.strip() for meal in meal_descriptions if meal.strip()]
-
-        for meal in meals:
-            meal_plan_dict['meals'].append({'meal_type': meal_type, 'meal': meal})
+        meal = meal_strings[i].strip() + meal_strings[i+1].strip().rstrip('/n')  # Remove spaces and trailing /n from the meal description
+        meal_type, meal_description = meal.split(':', 1)
+        meal_plan_dict['meals'].append({'meal_type': meal_type.strip(), 'meal': meal_description.strip()})
 
     return meal_plan_dict
-
-
-
 
