@@ -45,11 +45,12 @@ def generate_meal_plan(num_days, meal_goal):
 
 def meal_plan_to_dict(meal_plan_text):
     meal_plan_dict = {'meals': []}
-    pattern = r'(Breakfast|Lunch|Dinner): ([\w\s]+[^\s])'
+    pattern = r'(Breakfast|Lunch|Dinner): (.*?)(?=Breakfast|Lunch|Dinner|$)'
     matches = re.findall(pattern, meal_plan_text)
 
     for match in matches:
         meal_type, meal = match
+        meal = meal.strip().rstrip('/n')  
         meal_plan_dict['meals'].append({'meal_type': meal_type, 'meal': meal})
 
     return meal_plan_dict
