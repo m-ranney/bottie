@@ -36,7 +36,7 @@ def generate_meal_plan(meal_goal):
             {"role": "system", "content": "You are a helpful assistant that provides meal plans."},
             {"role": "user", "content": f"Please provide a meal plan with a focus on {meal_goal} meals. Suggest at least 10 meals, including multiple meals for breakfast, lunch, and dinner. Be as descriptive as possible, but do not provide recipes or cooking instructions. Use the format template provided and use a single delimiter (newline character '\\n') between each meal.---BEGIN FORMAT TEMPLATE---(Meal Type): (Meal)\\n---END FORMAT TEMPLATE--- For example, 'Breakfast: Greek yogurt with blueberries and granola.\\n' Ensure variety in the meal suggestions and the ability to buy ingredients that can be used in multiple selected dishes for efficient grocery shopping. Provide the meals in the following order: Breakfast, Lunch, and Dinner."}
         ],
-        max_tokens=400,
+        max_tokens=600,
     )
     return response
 
@@ -45,12 +45,19 @@ def meal_plan_to_dict(meal_plan_text):
     pattern = r'(?=(Breakfast|Lunch|Dinner))'
     meal_strings = re.split(pattern, meal_plan_text)
 
+    # Updated regex pattern to handle numbered lists and other potential delimiters
+    meal_delimiter_pattern = r'[\n\.\-]'
+
     for i in range(1, len(meal_strings), 2):
         meal_type = meal_strings[i].strip()
-        meal = meal_strings[i+1].strip().rstrip('/n')  # Remove spaces and trailing /n from the meal description
-        meal_plan_dict['meals'].append({'meal_type': meal_type, 'meal': meal})
+        meal_descriptions = re.split(meal_delimiter_pattern, meal_strings[i + 1].strip())
+        meals = [meal.strip() for meal in meal_descriptions if meal.strip()]
+
+        for meal in meals:
+            meal_plan_dict['meals'].append({'meal_type': meal_type, 'meal': meal})
 
     return meal_plan_dict
+
 
 
 
