@@ -10,10 +10,6 @@
         <input type="submit" class="btn btn-primary" value="Generate Meal Plan">
     </form>
 
-    {% if meal_plan_text %}
-        <h2>Full Output:</h2>
-        <pre>{{ meal_plan_text }}</pre>
-    {% endif %}
 
     {% if meal_plan_dict %}
         <table class="table">
@@ -38,6 +34,11 @@
               {% endfor %}
             </tbody>
           </table>
+    {% endif %}
+
+    {% if meal_plan_text %}
+        <h2>Full Output:</h2>
+        <pre>{{ meal_plan_text }}</pre>
     {% endif %}
 
 {% endblock %}
