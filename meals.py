@@ -31,7 +31,7 @@ def meal_plan():
 
 def generate_meal_plan(meal_goal):
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-003",
         prompt=f"Please provide a meal plan with a focus on {meal_goal} meals. Suggest multiple meals for breakfast, lunch, and dinner. Suggest at least 10 meals. Be as descriptive as possible. Include meals using the following format template, with one meal per line, for your response:---BEGIN FORMAT TEMPLATE---(Meal Type): (Meal). (Meal Type): (Meal).---END FORMAT TEMPLATE--- An example is 'Breakfast: Greek yogurt with blueberries and granola. \n Breakfast: Protein bar and a banana with coffee. \n Lunch: Kale salad with roasted chicken, dried cranberries and toasted walnuts. /n Dinner: Grilled salmon with roasted Brussels sprouts and roasted sweet potato.' Add some variety to the meal suggestions. Apply the ability to buy ingredients that can be used in multiple selected dishes for more efficient grocery shopping.",
         temperature=1,
         max_tokens=400,
@@ -44,14 +44,15 @@ def generate_meal_plan(meal_goal):
 
 def meal_plan_to_dict(meal_plan_text):
     meal_plan_dict = {'meals': []}
-    pattern = r'(Breakfast|Lunch|Dinner): (.*?)(?=(?<=\S) (?:Breakfast|Lunch|Dinner)|$)'
-    matches = re.findall(pattern, meal_plan_text)
+    pattern = r'(?=(Breakfast|Lunch|Dinner))'
+    meal_strings = re.split(pattern, meal_plan_text)
 
-    for match in matches:
-        meal_type, meal = match
-        meal = meal.strip().rstrip('/n')  
+    for i in range(1, len(meal_strings), 2):
+        meal_type = meal_strings[i].strip()
+        meal = meal_strings[i+1].strip().rstrip('/n')  # Remove spaces and trailing /n from the meal description
         meal_plan_dict['meals'].append({'meal_type': meal_type, 'meal': meal})
 
     return meal_plan_dict
+
 
 
