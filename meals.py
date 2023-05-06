@@ -45,15 +45,12 @@ def meal_plan_to_dict(meal_plan_text):
     current_meal_type = None
 
     for line in meal_plan_text.split('\n'):
-        meal_type_match = re.match(r'^(Breakfast|Lunch|Dinner|Snacks|Dessert):', line)
+        meal_type_match = re.match(r'^(Breakfast|Lunch|Dinner|Snacks|Dessert):', line.strip())
         if meal_type_match:
             current_meal_type = meal_type_match.group(1)
-        elif line.strip() != '':
+        else:
             meal_description = re.sub(r'^\W+', '', line.strip())  # Remove extra characters before the meal description
-            meal_plan_dict['meals'].append({'meal_type': current_meal_type, 'meal': meal_description})
+            if meal_description:
+                meal_plan_dict['meals'].append({'meal_type': current_meal_type, 'meal': meal_description})
 
     return meal_plan_dict
-
-
-
-
